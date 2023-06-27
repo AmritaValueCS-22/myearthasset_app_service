@@ -3,7 +3,7 @@ import path from "path";
 const __dirname = path.resolve();
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "./devfront/uploads/tag"));
+    cb(null, "uploads");
   },
   filename: (req, file, cb) => {
     cb(

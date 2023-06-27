@@ -18,6 +18,7 @@ export const signUp = async (req, res) => {
       statuscode: 400,
     });
   }
+  console.log(req.file.path);
   const hash_password = await hash(password, 10);
   const userData = {
     id: randomUUID(),
@@ -54,12 +55,9 @@ export const signIn = async (req, res) => {
       });
       return;
     }
-    const password = await hash(req.body.password, 10);
+
     const user = await User.findOne({ email: req.body.email });
-    const { hash_password } = user;
-    console.log(hash_password, password);
-    const comparePassword = await compare(password, hash_password);
-    console.log(comparePassword, "comparePassword");
+    console.log("hello");
     if (user) {
       if (user.authenticate(req.body.password)) {
         console.log("yoooooooooooooo");
