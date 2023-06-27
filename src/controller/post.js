@@ -35,7 +35,6 @@ export const uploadImage = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ message: "Image uploaded successfully", statuscode: 201 });
   } catch (err) {
-    console.log(err);
     res
       .status(StatusCodes.BAD_REQUEST)
       .json({ message: "Image uploaded Failed", statuscode: 400 });
