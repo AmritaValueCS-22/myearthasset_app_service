@@ -10,6 +10,12 @@ export const uploadImage = async (req, res) => {
   const { description, tags, longtitude, latitude, id } = req.body;
   console.log(req.body, "body");
   console.log(req.file, "file");
+  if (!req.files) {
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: "No files to upload", statuscode: 400 });
+    return;
+  }
   try {
     const image = new IMAGE({
       description: description,
@@ -29,9 +35,10 @@ export const uploadImage = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ message: "Image uploaded successfully", statuscode: 201 });
   } catch (err) {
+    console.log(err);
     res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ message: "Image uploaded Failed", statuscode: 240 });
+      .json({ message: "Image uploaded Failed", statuscode: 400 });
   }
 };
 export const getUsers = async (req, res) => {
