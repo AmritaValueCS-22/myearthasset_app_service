@@ -8,7 +8,8 @@ dotenv.config();
 
 export const uploadImage = async (req, res) => {
   const { description, tags, longtitude, latitude, id } = req.body;
-
+  console.log(req.body, "body");
+  console.log(req.file, "file");
   try {
     const image = new IMAGE({
       description: description,
@@ -19,7 +20,7 @@ export const uploadImage = async (req, res) => {
       imageUrl: path.basename(req.file.path),
       id,
     });
-
+    console.log("post mongodb", image);
     // Save the image to the database
     await image.save();
 
