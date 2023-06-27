@@ -17,7 +17,8 @@ export const uploadImage = async (req, res) => {
       tags: tags,
       longtitude: longtitude,
       latitude,
-      imageUrl: path.basename(req.file.path),
+      // imageUrl: path.basename(req.file.path),
+      imageUrl: req.file.path,
       id,
     });
     console.log("post mongodb", image);
