@@ -7,7 +7,6 @@ const userSchema = new Schema(
       type: String,
       require: true,
       trim: true,
-      unique: true,
       lowercase: true,
       index: true,
     },
@@ -40,10 +39,7 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
-//For get fullName from when we get data from database
-userSchema.virtual("fullName").get(function () {
-  return `${this.firstName} ${this.lastName}`;
-});
+
 userSchema.method({
   async authenticate(password) {
     return compare(password, this.hash_password);

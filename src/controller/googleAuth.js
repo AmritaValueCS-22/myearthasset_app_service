@@ -11,7 +11,6 @@ const client = new OAuth2Client(CLIENT_ID);
 
 async function loginApi(req, res) {
   const { idToken } = req.body;
-  console.log(req.body, "token");
   try {
     const ticket = await client.verifyIdToken({
       idToken,
@@ -24,7 +23,6 @@ async function loginApi(req, res) {
       user = new Auth({ name, email, picture, googleId: sub });
       await user.save();
     }
-    console.log(user, picture);
 
     res.status(StatusCodes.CREATED).json({
       user: {

@@ -20,7 +20,6 @@ export const validateUser = [
     }),
   (req, res, next) => {
     const errors = validationResult(req);
-    console.log(req.body, "hi");
     if (errors.array().length > 0) {
       return res
         .status(StatusCodes.BAD_REQUEST)

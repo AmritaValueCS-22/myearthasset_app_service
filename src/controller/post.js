@@ -58,14 +58,11 @@ export const getUsers = async (req, res) => {
 };
 export const getImageById = async (req, res) => {
   const id = req.query.id;
-  console.log(id, "if");
-
   // Check if email and token are provided
 
   try {
     // Find the user based on email and token
     const user = await IMAGE.find({ id });
-    console.log(user);
     if (!user) {
       return res
         .status(404)

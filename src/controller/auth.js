@@ -4,7 +4,7 @@ dotenv.config();
 import { StatusCodes } from "http-status-codes";
 import User from "../models/UserSchema.js";
 import jwt from "jsonwebtoken";
-import { hash } from "bcrypt";
+import { compare, hash } from "bcrypt";
 import { randomUUID } from "crypto";
 import path from "path";
 const { sign } = jwt;
@@ -46,8 +46,6 @@ export const signUp = async (req, res) => {
   }
 };
 export const signIn = async (req, res) => {
-  console.log(req.body);
-
   try {
     if (!req.body.email || !req.body.password) {
       res.status(StatusCodes.BAD_REQUEST).json({
@@ -56,7 +54,12 @@ export const signIn = async (req, res) => {
       });
       return;
     }
+    const password = await hash(req.body.password, 10);
     const user = await User.findOne({ email: req.body.email });
+    const { hash_password } = user;
+    console.log(hash_password, password);
+    const comparePassword = await compare(password, hash_password);
+    console.log(comparePassword, "comparePassword");
     if (user) {
       if (user.authenticate(req.body.password)) {
         console.log("yoooooooooooooo");
