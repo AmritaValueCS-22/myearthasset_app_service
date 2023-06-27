@@ -18,7 +18,7 @@ app.use(
 );
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static("uploads"));
+app.use(express.static("./devfront/uploads/tag"));
 app.use("/api", authRouter);
 app.use("/user", postReducer);
 
@@ -34,11 +34,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
-});
-
-app.post("/api/registers", upload.single("profilePicture"), (req, res) => {
-  const { firstName, password, email } = req.body;
-  res.send("hi");
 });
 
 //Port and Connect to DB

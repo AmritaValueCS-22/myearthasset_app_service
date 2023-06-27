@@ -7,6 +7,7 @@ const postSchema = new mongoose.Schema(
     latitude: Number,
     longtitude: Number,
     imageUrl: String,
+    id: String,
   },
   { timestamps: true }
 );

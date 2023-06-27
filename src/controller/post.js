@@ -7,7 +7,7 @@ import path from "path";
 dotenv.config();
 
 export const uploadImage = async (req, res) => {
-  const { description, tags, longtitude, latitude } = req.body;
+  const { description, tags, longtitude, latitude, id } = req.body;
 
   try {
     const image = new IMAGE({
@@ -17,6 +17,7 @@ export const uploadImage = async (req, res) => {
       longtitude: longtitude,
       latitude,
       imageUrl: path.basename(req.file.path),
+      id,
     });
 
     // Save the image to the database
@@ -44,6 +45,27 @@ export const getUsers = async (req, res) => {
     // Find the user based on email and token
     const user = await UserSchema.findOne({ id });
 
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "User not found or invalid credentials." });
+    }
+
+    return res.json({ user });
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error." });
+  }
+};
+export const getImageById = async (req, res) => {
+  const id = req.query.id;
+  console.log(id, "if");
+
+  // Check if email and token are provided
+
+  try {
+    // Find the user based on email and token
+    const user = await IMAGE.find({ id });
+    console.log(user);
     if (!user) {
       return res
         .status(404)

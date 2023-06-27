@@ -47,14 +47,15 @@ export const signUp = async (req, res) => {
 };
 export const signIn = async (req, res) => {
   console.log(req.body);
+
   try {
     if (!req.body.email || !req.body.password) {
       res.status(StatusCodes.BAD_REQUEST).json({
         message: "Please enter email and password",
         statuscode: 400,
       });
+      return;
     }
-
     const user = await User.findOne({ email: req.body.email });
     if (user) {
       if (user.authenticate(req.body.password)) {

@@ -1,11 +1,17 @@
 import multer from "multer";
-
+import path from "path";
+const __dirname = path.resolve();
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads");
+    cb(null, path.join(__dirname, "./devfront/uploads/tag"));
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    cb(
+      null,
+      `${file.fieldname}-myEarth-${Date.now()}${path.extname(
+        file.originalname
+      )}`
+    );
   },
 });
 const upload = multer({ storage });
