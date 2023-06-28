@@ -5,6 +5,7 @@ import {
   pos,
   uploadImage,
 } from "../controller/post.js";
+import upload from "../middlewear/uploadImage.js";
 // import { uploadMiddlewear } from "../middlewear/uploadImage.js";
 const router = express.Router();
 
