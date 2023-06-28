@@ -9,7 +9,7 @@ dotenv.config();
 export const uploadImage = async (req, res) => {
   const { description, tags, longtitude, latitude, id } = req.body;
   console.log(req.body, "body");
-  console.log(req.files, "file");
+  console.log(req.file, "file");
   if (!req.files) {
     res
       .status(StatusCodes.BAD_REQUEST)
