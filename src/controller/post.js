@@ -10,7 +10,7 @@ export const uploadImage = async (req, res) => {
   const { description, tags, longtitude, latitude, id } = req.body;
   console.log(req.body, "body");
   console.log(req.file, "file");
-  if (!req.files) {
+  if (!req.file) {
     res
       .status(StatusCodes.BAD_REQUEST)
       .json({ message: "No files to upload", statuscode: 400 });
