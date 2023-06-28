@@ -7,8 +7,15 @@ import path from "path";
 dotenv.config();
 
 export const uploadImage = async (req, res) => {
-  const { description, tags, longtitude, latitude } = req.body;
-
+  const { description, tags, longtitude, latitude, id } = req.body;
+  console.log(req.body, "body");
+  console.log(req.files, "file");
+  if (!req.files) {
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: "No files to upload", statuscode: 400 });
+    return;
+  }
   try {
     const image = new IMAGE({
       description: description,
@@ -16,9 +23,11 @@ export const uploadImage = async (req, res) => {
       tags: tags,
       longtitude: longtitude,
       latitude,
-      imageUrl: path.basename(req.file.path),
+      // imageUrl: path.basename(req.file.path),
+      imageUrl: req.file.path,
+      id,
     });
-
+    console.log("post mongodb", image);
     // Save the image to the database
     await image.save();
 
@@ -28,7 +37,7 @@ export const uploadImage = async (req, res) => {
   } catch (err) {
     res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ message: "Image uploaded Failed", statuscode: 240 });
+      .json({ message: "Image uploaded Failed", statuscode: 400 });
   }
 };
 export const getUsers = async (req, res) => {
@@ -44,6 +53,24 @@ export const getUsers = async (req, res) => {
     // Find the user based on email and token
     const user = await UserSchema.findOne({ id });
 
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "User not found or invalid credentials." });
+    }
+
+    return res.json({ user });
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error." });
+  }
+};
+export const getImageById = async (req, res) => {
+  const id = req.query.id;
+  // Check if email and token are provided
+
+  try {
+    // Find the user based on email and token
+    const user = await IMAGE.find({ id });
     if (!user) {
       return res
         .status(404)
