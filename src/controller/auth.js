@@ -27,7 +27,7 @@ export const signUp = async (req, res) => {
     hash_password,
     selectId,
     idNumber,
-    profilePicture: path.basename(req.file.path),
+    profilePicture: req.file.path,
   };
   let user = await User.findOne({ email });
 
