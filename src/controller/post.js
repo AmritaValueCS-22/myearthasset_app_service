@@ -9,7 +9,7 @@ dotenv.config();
 export const uploadImage = async (req, res) => {
   const { description, tags, longtitude, latitude, id } = req.body;
   console.log(req.body, "body");
-  console.log(req.file, "file");
+  console.log(req.files, "file");
   if (!req.files) {
     res
       .status(StatusCodes.BAD_REQUEST)
@@ -80,5 +80,13 @@ export const getImageById = async (req, res) => {
     return res.json({ user });
   } catch (err) {
     return res.status(500).json({ error: "Internal server error." });
+  }
+};
+
+export const pos = async (req, res) => {
+  if (!req.file) {
+    throw Error("FILE_MISSING");
+  } else {
+    res.send("success");
   }
 };
