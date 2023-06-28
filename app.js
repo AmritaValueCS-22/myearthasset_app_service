@@ -8,7 +8,7 @@ import authRouter from "./src/routes/auth.js";
 import postReducer from "./src/routes/post.js";
 import { MongoDbURL } from "./utilis/index.js";
 import bodyParser from "body-parser";
-import multer from "multer";
+import multer, { MulterError } from "multer";
 app.use(cors());
 app.use(json());
 app.use(
@@ -48,10 +48,22 @@ const start = async () => {
     console.log("error =>", error);
   }
 };
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack, "err");
-
+  if (err instanceof MulterError) {
+    res.statusCode = 400;
+    res.send(err.code);
+  } else if (err) {
+    if (err.message === "FILE_MISSING") {
+      res.statusCode = 400;
+      res.send("FILE_MISSING");
+    } else {
+      res.statusCode = 500;
+      res.send("GENERIC_ERROR");
+    }
+  }
   if (res.headersSent) {
     return next(err);
   }
