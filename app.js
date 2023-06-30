@@ -8,7 +8,7 @@ import authRouter from "./src/routes/auth.js";
 import postReducer from "./src/routes/post.js";
 import { MongoDbURL } from "./utilis/index.js";
 import bodyParser from "body-parser";
-import multer, { MulterError } from "multer";
+import { MulterError } from "multer";
 app.use(cors());
 app.use(json());
 app.use(
@@ -21,20 +21,6 @@ app.use(express.json());
 app.use(express.static("./uploads"));
 app.use("/api", authRouter);
 app.use("/user", postReducer);
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    const fileName = file.originalname.toLowerCase().split(" ").join("-");
-    cb(null, Date.now() + "-" + fileName);
-  },
-});
-
-const upload = multer({
-  storage: storage,
-});
 
 //Port and Connect to DB
 const port = process.env.PORT || 5000;

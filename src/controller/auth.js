@@ -1,12 +1,10 @@
-import fs from "fs";
 import dotenv from "dotenv";
 dotenv.config();
 import { StatusCodes } from "http-status-codes";
 import User from "../models/UserSchema.js";
 import jwt from "jsonwebtoken";
-import { compare, hash } from "bcrypt";
+import { hash } from "bcrypt";
 import { randomUUID } from "crypto";
-import path from "path";
 const { sign } = jwt;
 
 export const signUp = async (req, res) => {

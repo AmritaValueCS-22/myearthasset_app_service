@@ -2,7 +2,6 @@ import dotenv from "dotenv";
 import { IMAGE } from "../models/userPostSchema.js";
 import { StatusCodes } from "http-status-codes";
 import UserSchema from "../models/UserSchema.js";
-import path from "path";
 
 dotenv.config();
 
@@ -42,6 +41,7 @@ export const uploadImage = async (req, res) => {
 };
 export const getUsers = async (req, res) => {
   const id = req.query.id;
+  const role = "admin";
   console.log(id);
 
   // Check if email and token are provided
