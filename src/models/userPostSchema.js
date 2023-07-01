@@ -8,6 +8,10 @@ const postSchema = new mongoose.Schema(
     longtitude: Number,
     imageUrl: String,
     id: String,
+    email: {
+      type: String,
+      require: true,
+    },
   },
   { timestamps: true }
 );

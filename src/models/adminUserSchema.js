@@ -23,25 +23,9 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ["normaluser", "organizationUser", "registerUser", "admin"],
       require: true,
     },
-    contactNumber: {
-      type: String,
-    },
     profilePicture: { type: String },
-    selectId: {
-      type: String,
-    },
-    idNumber: {
-      type: String,
-    },
-    Active: {
-      type: Boolean,
-    },
-    noOfAssets: {
-      type: Number,
-    },
   },
   { timestamps: true }
 );
@@ -51,4 +35,4 @@ userSchema.method({
     return compare(password, this.hash_password);
   },
 });
-export default model("User", userSchema);
+export default model("AdminUser", userSchema);

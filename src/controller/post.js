@@ -2,11 +2,12 @@ import dotenv from "dotenv";
 import { IMAGE } from "../models/userPostSchema.js";
 import { StatusCodes } from "http-status-codes";
 import UserSchema from "../models/UserSchema.js";
+import { ADMIN_ID } from "../../utilis/index.js";
 
 dotenv.config();
 
 export const uploadImage = async (req, res) => {
-  const { description, tags, longtitude, latitude, id } = req.body;
+  const { description, tags, longtitude, latitude, id, email } = req.body;
   console.log(req.body, "body");
   console.log(req.file, "file");
   if (!req.file) {
@@ -25,8 +26,14 @@ export const uploadImage = async (req, res) => {
       // imageUrl: path.basename(req.file.path),
       imageUrl: req.file.path,
       id,
+      email,
     });
-    console.log("post mongodb", image);
+    const user = await UserSchema.findOne({ email });
+    let totalAssets = user.noOfAssets;
+    user.noOfAssets = totalAssets + 1;
+    await user.save();
+    console.log("hello", user.noOfAssets);
+
     // Save the image to the database
     await image.save();
 
@@ -41,7 +48,6 @@ export const uploadImage = async (req, res) => {
 };
 export const getUsers = async (req, res) => {
   const id = req.query.id;
-  const role = "admin";
   console.log(id);
 
   // Check if email and token are provided
@@ -52,6 +58,7 @@ export const getUsers = async (req, res) => {
   try {
     // Find the user based on email and token
     const user = await UserSchema.findOne({ id });
+    console.log("ddd", user);
 
     if (!user) {
       return res
@@ -62,6 +69,62 @@ export const getUsers = async (req, res) => {
     return res.json({ user });
   } catch (err) {
     return res.status(500).json({ error: "Internal server error." });
+  }
+};
+export const getAllUsersAssets = async (req, res) => {
+  const id = req.query.id;
+  console.log(id);
+
+  // Check if email and token are provided
+  if (!id) {
+    return res.status(400).json({ error: "Email and token are required." });
+  }
+  if (id === ADMIN_ID) {
+    console.log("gfgf");
+    try {
+      // Find the user based on email and token
+      const user = await IMAGE.find();
+
+      if (!user) {
+        return res
+          .status(404)
+          .json({ error: "User not found or invalid credentials." });
+      }
+
+      return res.json({ user });
+    } catch (err) {
+      return res.status(500).json({ error: "Internal server error." });
+    }
+  } else {
+    return res.status(404).json({ error: "You Don't Have an access" });
+  }
+};
+export const getAllUsers = async (req, res) => {
+  const id = req.query.id;
+  console.log(id);
+
+  // Check if email and token are provided
+  if (!id) {
+    return res.status(400).json({ error: "Email and token are required." });
+  }
+  if (id === ADMIN_ID) {
+    console.log("gfgf");
+    try {
+      // Find the user based on email and token
+      const user = await UserSchema.find();
+
+      if (!user) {
+        return res
+          .status(404)
+          .json({ error: "User not found or invalid credentials." });
+      }
+
+      return res.json({ user });
+    } catch (err) {
+      return res.status(500).json({ error: "Internal server error." });
+    }
+  } else {
+    return res.status(404).json({ error: "You Don't Have an access" });
   }
 };
 export const getImageById = async (req, res) => {

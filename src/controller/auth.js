@@ -8,7 +8,8 @@ import { randomUUID } from "crypto";
 const { sign } = jwt;
 
 export const signUp = async (req, res) => {
-  const { fullname, email, password, role, selectId, idNumber } = req.body;
+  const { fullname, email, password, role, selectId, idNumber, mobile } =
+    req.body;
 
   if (!fullname || !email || !password) {
     return res.status(StatusCodes.BAD_REQUEST).json({
@@ -26,6 +27,10 @@ export const signUp = async (req, res) => {
     selectId,
     idNumber,
     profilePicture: req.file.path,
+    role,
+    Active: false,
+    contactNumber: mobile,
+    noOfAssets: 0,
   };
   let user = await User.findOne({ email });
 
@@ -37,10 +42,11 @@ export const signUp = async (req, res) => {
   } else {
     User.create(userData).then((data, err) => {
       if (err) res.status(StatusCodes.BAD_REQUEST).json({ err });
-      else
+      else {
         res
           .status(StatusCodes.CREATED)
           .json({ message: "User created Successfully", statuscode: 201 });
+      }
     });
   }
 };
@@ -55,6 +61,7 @@ export const signIn = async (req, res) => {
     }
 
     const user = await User.findOne({ email: req.body.email });
+
     console.log("hello");
     if (user) {
       if (user.authenticate(req.body.password)) {
@@ -65,6 +72,8 @@ export const signIn = async (req, res) => {
           { expiresIn: "30d" }
         );
         const { _id, email, role, fullname, profilePicture, id } = user;
+        user.Active = true;
+        await user.save();
         res.status(StatusCodes.OK).json({
           user: { id, token },
           message: "Logged In Successfully",
@@ -84,5 +93,29 @@ export const signIn = async (req, res) => {
     }
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).json({ error: "naaaa" });
+  }
+};
+export const logout = async (req, res) => {
+  const { id } = req.body;
+  console.log(id);
+  try {
+    // Find the user in the database
+    const user = await User.findOne({ id });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Set login status to false
+    user.Active = false;
+    await user.save();
+
+    return res.status(StatusCodes.OK).json({
+      message: "Logout Successfully",
+      statuscode: 200,
+    });
+  } catch (error) {
+    console.error("Error during logout", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
