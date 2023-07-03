@@ -9,6 +9,8 @@ import postReducer from "./src/routes/post.js";
 import { MongoDbURL } from "./utilis/index.js";
 import bodyParser from "body-parser";
 import { MulterError } from "multer";
+import path from "path";
+const __dirname = path.resolve();
 app.use(cors());
 app.use(json());
 app.use(
@@ -21,7 +23,9 @@ app.use(express.json());
 app.use(express.static("./uploads"));
 app.use("/api", authRouter);
 app.use("/user", postReducer);
-
+app.use("/admin", (req, res, next) => {
+  res.send("hello");
+});
 //Port and Connect to DB
 const port = process.env.PORT || 5000;
 const start = async () => {
