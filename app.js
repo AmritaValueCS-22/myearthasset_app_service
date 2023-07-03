@@ -21,11 +21,16 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("./uploads"));
+app.use(express.static(path.join(__dirname, "build")));
 app.use("/api", authRouter);
 app.use("/user", postReducer);
 app.use("/admin", (req, res, next) => {
-  res.send("hello");
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
+app.get("/", (req, res, next) => {
+  res.send("NO SUCH PATH");
+});
+
 //Port and Connect to DB
 const port = process.env.PORT || 5000;
 const start = async () => {
