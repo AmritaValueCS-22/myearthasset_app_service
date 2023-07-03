@@ -67,7 +67,7 @@ export const signIn = async (req, res) => {
     );
     console.log(req.body.password, user.hash_password, passwordIsValid);
     if (!passwordIsValid) {
-      res.status(StatusCodes.UNAUTHORIZED).json({
+      return res.status(StatusCodes.UNAUTHORIZED).json({
         accessToken: null,
         message: "Invalid Password!",
         statuscode: 401,
@@ -75,7 +75,7 @@ export const signIn = async (req, res) => {
     }
     console.log("hello");
     if (user) {
-      if (user.authenticate(req.body.password)) {
+      if (passwordIsValid) {
         console.log("yoooooooooooooo");
         const token = sign(
           { _id: user._id, role: user.role },
