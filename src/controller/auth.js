@@ -3,7 +3,7 @@ dotenv.config();
 import { StatusCodes } from "http-status-codes";
 import User from "../models/UserSchema.js";
 import jwt from "jsonwebtoken";
-import { hash } from "bcrypt";
+import bcrypt from "bcrypt";
 import { randomUUID } from "crypto";
 const { sign } = jwt;
 
@@ -18,7 +18,7 @@ export const signUp = async (req, res) => {
     });
   }
   console.log(req.file.path);
-  const hash_password = await hash(password, 10);
+  const hash_password = bcrypt.hashSync(password, 8);
   const userData = {
     id: randomUUID(),
     fullname,
@@ -61,7 +61,18 @@ export const signIn = async (req, res) => {
     }
 
     const user = await User.findOne({ email: req.body.email });
-
+    var passwordIsValid = bcrypt.compareSync(
+      req.body.password,
+      user.hash_password
+    );
+    console.log(req.body.password, user.hash_password, passwordIsValid);
+    if (!passwordIsValid) {
+      res.status(StatusCodes.UNAUTHORIZED).json({
+        accessToken: null,
+        message: "Invalid Password!",
+        statuscode: 401,
+      });
+    }
     console.log("hello");
     if (user) {
       if (user.authenticate(req.body.password)) {
