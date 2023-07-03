@@ -17,7 +17,7 @@ export const signUp = async (req, res) => {
       statuscode: 400,
     });
   }
-  console.log(req.file.path);
+
   const hash_password = bcrypt.hashSync(password, 8);
   const userData = {
     id: randomUUID(),
@@ -65,7 +65,6 @@ export const signIn = async (req, res) => {
       req.body.password,
       user.hash_password
     );
-    console.log(req.body.password, user.hash_password, passwordIsValid);
     if (!passwordIsValid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         accessToken: null,
@@ -73,7 +72,6 @@ export const signIn = async (req, res) => {
         statuscode: 401,
       });
     }
-    console.log("hello");
     if (user) {
       if (passwordIsValid) {
         const token = sign(
@@ -102,12 +100,11 @@ export const signIn = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).json({ error: "naaaa" });
+    res.status(StatusCodes.BAD_REQUEST).json({ error: "Something went wrong" });
   }
 };
 export const logout = async (req, res) => {
   const { id } = req.body;
-  console.log(id);
   try {
     // Find the user in the database
     const user = await User.findOne({ id });

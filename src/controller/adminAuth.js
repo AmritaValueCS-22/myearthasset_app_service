@@ -31,6 +31,4 @@ export const AdminSignUp = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-export const AdminSignIn = async (req, res) => {
-  console.log(req);
-};
+export const AdminSignIn = async (req, res) => {};

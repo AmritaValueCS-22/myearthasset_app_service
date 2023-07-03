@@ -8,8 +8,6 @@ dotenv.config();
 
 export const uploadImage = async (req, res) => {
   const { description, tags, longtitude, latitude, id, email } = req.body;
-  console.log(req.body, "body");
-  console.log(req.file, "file");
   if (!req.file) {
     res
       .status(StatusCodes.BAD_REQUEST)
@@ -32,7 +30,6 @@ export const uploadImage = async (req, res) => {
     let totalAssets = user.noOfAssets;
     user.noOfAssets = totalAssets + 1;
     await user.save();
-    console.log("hello", user.noOfAssets);
 
     // Save the image to the database
     await image.save();
@@ -48,7 +45,6 @@ export const uploadImage = async (req, res) => {
 };
 export const getUsers = async (req, res) => {
   const id = req.query.id;
-  console.log(id);
 
   // Check if email and token are provided
   if (!id) {
@@ -58,7 +54,6 @@ export const getUsers = async (req, res) => {
   try {
     // Find the user based on email and token
     const user = await UserSchema.findOne({ id });
-    console.log("ddd", user);
 
     if (!user) {
       return res
@@ -73,14 +68,12 @@ export const getUsers = async (req, res) => {
 };
 export const getAllUsersAssets = async (req, res) => {
   const id = req.query.id;
-  console.log(id);
 
   // Check if email and token are provided
   if (!id) {
     return res.status(400).json({ error: "Email and token are required." });
   }
   if (id === ADMIN_ID) {
-    console.log("gfgf");
     try {
       // Find the user based on email and token
       const user = await IMAGE.find();
@@ -101,14 +94,12 @@ export const getAllUsersAssets = async (req, res) => {
 };
 export const getAllUsers = async (req, res) => {
   const id = req.query.id;
-  console.log(id);
 
   // Check if email and token are provided
   if (!id) {
     return res.status(400).json({ error: "Email and token are required." });
   }
   if (id === ADMIN_ID) {
-    console.log("gfgf");
     try {
       // Find the user based on email and token
       const user = await UserSchema.find();
