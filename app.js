@@ -6,10 +6,12 @@ const app = express();
 import cors from "cors";
 import authRouter from "./src/routes/auth.js";
 import postReducer from "./src/routes/post.js";
+import adminRouter from "./src/routes/adminRouter.js";
 import { MongoDbURL } from "./utilis/index.js";
 import bodyParser from "body-parser";
 import { MulterError } from "multer";
 import path from "path";
+
 const __dirname = path.resolve();
 app.use(cors());
 app.use(json());
@@ -27,9 +29,8 @@ app.use("/user", postReducer);
 app.use("/admin", (req, res, next) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
-app.get("/", (req, res, next) => {
-  res.send("NO SUCH PATH");
-});
+console.log(process.env.SMTP_MAIL, process.env.SMTP_PASSWORD);
+app.use("/", adminRouter);
 
 //Port and Connect to DB
 const port = process.env.PORT || 5000;

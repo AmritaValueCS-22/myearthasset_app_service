@@ -14,6 +14,7 @@ export const uploadImage = async (req, res) => {
       .json({ message: "No files to upload", statuscode: 400 });
     return;
   }
+  console.log(req.body);
   try {
     const image = new IMAGE({
       description: description,

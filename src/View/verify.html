@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100vh;
+      box-sizing: border-box;
+      margin: 0;
+      background-color: whitesmoke;
+    "
+    id="container"
+  >
+    <script>
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const message = urlParams.get("message");
+      const error = urlParams.get("error");
+      console.log(message, error, "hello");
+      const bodyContent = !error
+        ? `<div style="
+        background-color: white;
+        border-radius:50px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        flex-direction:column;
+        width: 700px;
+        height: 500px;
+        position:relative;">
+        <h3 style="margin:0px; text-align:center;padding:22px;font-size:24px;font-family:sans-serif">
+        Email Has Been Verified
+          <h3/>
+        <lottie-player
+         src="https://assets4.lottiefiles.com/private_files/lf30_dfspihm8.json"
+         background="transparent"
+         speed="1"
+         style="width: 100px; height: 100px;margin-left:40px;"
+         loop
+         autoplay
+        >
+        </lottie-player>
+        <p style="margin:0px; text-align:center;padding:22px;font-size:11px;font-family:sans-serif">
+        You Can Login Now <a target='blank' href=http://localhost:3000/>Login</a>
+        <p/>
+        <div style="position:absolute;width:100%;height:100px;background-color:#33b025;bottom: 0px;
+      left: 0px;">
+      <p style="color:white;font-size:13px;text-align:center;margin-top:40px;">@myEarthAssets</p></div>
+        </div>`
+        : `<div style="
+        background-color: white;
+        border-radius:50px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        flex-direction:column;
+        width: 700px;
+        height: 500px;
+        position:relative;">
+        <h3 style="margin:0px; text-align:center;padding:22px;font-size:24px;font-family:sans-serif">
+        Email Verification is Failed
+          <h3/>
+        <lottie-player
+         src="https://assets1.lottiefiles.com/packages/lf20_nktblnqq.json"
+         background="transparent"
+         speed="1"
+         style="width: 100px; height: 100px;margin-left:190px;"
+         loop
+         autoplay
+        >
+        </lottie-player>
+        <p style="margin:0px; text-align:center;padding:22px;font-size:11px;font-family:sans-serif">
+       ${message} <a target='blank' href=http://localhost:3000/>Login</a>
+        <p/>
+        <div style="position:absolute;width:100%;height:100px;background-color:#FB5959;bottom: 0px;
+      left: 0px;">
+      <p style="color:white;font-size:13px;text-align:center;margin-top:40px;">@myEarthAssets</p></div>
+        </div>`;
+      const container = document.getElementById("container");
+      container.insertAdjacentHTML("beforeend", bodyContent);
+      console.log(bodyContent);
+    </script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  </body>
+</html>

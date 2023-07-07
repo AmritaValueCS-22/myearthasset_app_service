@@ -7,7 +7,6 @@ const userSchema = new Schema(
       type: String,
       require: true,
       trim: true,
-      lowercase: true,
       index: true,
     },
     email: {
@@ -25,7 +24,7 @@ const userSchema = new Schema(
       type: String,
       require: true,
     },
-    profilePicture: { type: String },
+    verified: Boolean,
   },
   { timestamps: true }
 );

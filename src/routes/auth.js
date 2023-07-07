@@ -16,8 +16,6 @@ router
   .route("/signup")
   .post(uploadMiddlewear, validateSignUpRequest, isRequestValidated, signUp);
 router.route("/logout").post(logout);
-router.route("/admin/signup").post(uploadMiddlewear, AdminSignUp);
-router.route("/adminSignin").post(AdminSignIn);
 router.route("/post").post(uploadImage);
 
 export default router;
