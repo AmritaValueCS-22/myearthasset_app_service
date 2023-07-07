@@ -40,10 +40,7 @@ export const AdminSignUp = async (req, res) => {
       .json({ message: "Enter all feilds", statuscode: 400 });
   }
   try {
-    console.log("hello");
-
     adminUserSchema.find({ email }).then((result) => {
-      console.log(result);
       if (result.length) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: "User Admin already registered, Try to login !",
@@ -76,7 +73,6 @@ export const AdminSignUp = async (req, res) => {
                 //   statuscode: 201,
                 //   data: result,
                 // });
-                console.log("working");
                 sendVerificationEmail(result, res);
               })
               .catch((err) => {
@@ -96,7 +92,6 @@ export const AdminSignUp = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  console.log(req.body);
 };
 const sendVerificationEmail = async ({ _id, email }, res) => {
   const currentUrl = "http://123.63.2.13:8080";
