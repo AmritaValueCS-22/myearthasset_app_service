@@ -31,7 +31,9 @@ app.use("/admin", (req, res, next) => {
 });
 
 app.use("/", adminRouter);
-
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "build", "index.html"))
+);
 //Port and Connect to DB
 const port = process.env.PORT || 5000;
 const start = async () => {
