@@ -233,7 +233,7 @@ export const AdminSignIn = async (req, res) => {
   }
   try {
     const admin = await adminUserSchema.findOne({ email: req.body.email });
-    console.log(admin);
+
     var passwordIsValid = bcrypt.compareSync(
       req.body.password,
       admin.hash_password
@@ -265,12 +265,18 @@ export const AdminSignIn = async (req, res) => {
         });
       }
     } else {
+      console.log("err");
       res.status(StatusCodes.BAD_REQUEST).json({
         message: "User does not exist..!",
         statuscode: 400,
       });
     }
-  } catch (error) {}
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      message: "User does not exist..!",
+      statuscode: 400,
+    });
+  }
 };
 export const getAdminUsers = async (req, res) => {
   const id = req.query.id;
