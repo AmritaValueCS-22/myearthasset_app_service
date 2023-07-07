@@ -26,7 +26,7 @@ app.use(express.static("./uploads"));
 app.use(express.static(path.join(__dirname, "build")));
 app.use("/api", authRouter);
 app.use("/user", postReducer);
-app.use("/", (req, res, next) => {
+app.use("/admin", (req, res, next) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
