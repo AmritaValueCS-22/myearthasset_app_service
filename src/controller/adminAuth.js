@@ -99,13 +99,13 @@ export const AdminSignUp = async (req, res) => {
   console.log(req.body);
 };
 const sendVerificationEmail = async ({ _id, email }, res) => {
-  const currentUrl = "http://192.168.183.135:4848";
+  const currentUrl = "http://123.63.2.13:8080";
   const uniqueString = uuidv4() + _id;
   const mailOption = {
     from: process.env.SMTP_MAIL,
     to: email,
     subject: "Verify your Email",
-    html: `<p>Verify your email address to complete the signup</p><p>This Link<b>expires in 6 hours</b>.</p><p>Press <a href=${
+    html: `<p>Verify your email address to complete the signup </p><p> This Link <b>expires in 6 hours </b>.</p><p> Press <a href=${
       currentUrl + "/verify/" + _id + "/" + uniqueString
     }>here</a>to proceed.</p>`,
   };
@@ -116,7 +116,7 @@ const sendVerificationEmail = async ({ _id, email }, res) => {
       const newVerification = new verifyAdminUser({
         id: _id,
         uniqueNumber: hashedUniqueString,
-        expiredAt: Date.now() + 21600000,
+        expiredAt: Date.now() + 600000,
         createdAt: Date.now(),
       });
       newVerification
