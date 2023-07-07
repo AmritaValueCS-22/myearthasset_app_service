@@ -29,7 +29,7 @@ app.use("/user", postReducer);
 app.use("/admin", (req, res, next) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
-console.log(process.env.SMTP_MAIL, process.env.SMTP_PASSWORD);
+
 app.use("/", adminRouter);
 
 //Port and Connect to DB
