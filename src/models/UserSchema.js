@@ -23,7 +23,13 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ["normaluser", "organizationUser", "registerUser", "admin"],
+      enum: [
+        "normaluser",
+        "userCommunication",
+        "organizationUser",
+        "registerUser",
+        "admin",
+      ],
       require: true,
     },
     contactNumber: {
