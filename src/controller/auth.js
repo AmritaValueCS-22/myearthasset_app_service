@@ -4,7 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import User from "../models/UserSchema.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { randomUUID } from "crypto";
+import crypto from "crypto";
 const { sign } = jwt;
 
 export const signUp = async (req, res) => {
@@ -20,7 +20,7 @@ export const signUp = async (req, res) => {
 
   const hash_password = bcrypt.hashSync(password, 8);
   const userData = {
-    id: randomUUID(),
+    id: crypto.randomUUID(),
     fullname,
     email,
     hash_password,
