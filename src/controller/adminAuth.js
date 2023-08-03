@@ -4,7 +4,6 @@ import { StatusCodes } from "http-status-codes";
 import User from "../models/UserSchema.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { randomUUID } from "crypto";
 import { createTransport } from "nodemailer";
 import adminUserSchema from "../models/adminUserSchema.js";
 import { ADMIN_ID } from "../../utilis/index.js";
