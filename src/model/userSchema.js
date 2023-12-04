@@ -2,6 +2,14 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
+const attedenceSchema = new mongoose.Schema({
+  eventName: { type: String },
+  startDate: { type: Date, required: true },
+  endDate: { type: Date, required: true },
+  attedence: { type: Boolean },
+  reason: { type: String },
+  id: { type: String, require: true },
+});
 const profileSchema = new mongoose.Schema({
   id: { type: String },
   name: { type: String, required: true },
@@ -12,13 +20,15 @@ const profileSchema = new mongoose.Schema({
   roomNumber: { type: String },
   dateOfBirth: { type: String },
   emergencyContact: { type: {} },
+  attedence: [attedenceSchema],
 });
-
 const eventSchema = new mongoose.Schema({
   eventName: { type: String, required: true },
   participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "username" }],
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
+  startTime: { type: String, required: true },
+  endTime: { type: String, required: true },
   allDay: { type: Boolean, default: false },
   location: { type: String },
   repeat: { type: String },

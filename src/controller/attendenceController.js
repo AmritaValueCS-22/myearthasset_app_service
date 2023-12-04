@@ -1,30 +1,43 @@
 import { StatusCodes } from "http-status-codes";
 import User from "../model/userSchema.js";
 
-export const userDetails = async (req, res) => {
+export const attendenceUpdate = async (req, res) => {
   try {
-    const { userId } = req.query;
+    const { userId } = req.user;
+    const { eventName, id, attedence, reason, startDate, endDate } = req.body;
 
     let user = await User.findOne({ userId });
-
+    console.log(user, req.body);
     if (!user) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         message: "User not found",
         statuscode: 400,
       });
     }
+
+    user.profile.map((item) => {
+      let userAttedence = item.attedence;
+      if (item.id === id) {
+        const obj = {
+          eventName,
+          attedence,
+          reason,
+          startDate,
+          endDate,
+          name: item.name,
+          class: item.class,
+        };
+        item.attedence = item.attedence || [];
+        item.attedence = [...userAttedence, obj];
+      }
+    });
+
     if (user.userRole === "participant") {
+      await user.save();
       res.status(StatusCodes.OK).json({
-        message: "fetched userData",
+        message: "Successfully Entered",
         statuscode: 200,
-        user,
-      });
-    } else {
-      res.status(StatusCodes.OK).json({
-        message: "fetched userData",
-        statuscode: 200,
-        user: await User.find({}),
-        userEvents: user.events,
+        userProfile: user.profile,
       });
     }
   } catch (error) {
@@ -36,7 +49,8 @@ export const userDetails = async (req, res) => {
     });
   }
 };
-export const getAllUserNames = async (req, res) => {
+
+export const getAttedence = async (req, res) => {
   try {
     const { userId } = req.query;
 
@@ -48,19 +62,22 @@ export const getAllUserNames = async (req, res) => {
         statuscode: 400,
       });
     }
-    let userNames = [];
+    let attedenceUser = [];
     const allUsers = await User.find({});
     allUsers.map((item) => {
       if (item.username !== "admin") {
-        userNames.push(item.username);
+        item.profile.map((attedences) => {
+          console.log(attedences.attedence);
+          attedenceUser = [...attedences.attedence, ...attedenceUser];
+        });
       }
     });
-
+    console.log(attedenceUser);
     if (user.userRole === "organizer") {
       res.status(StatusCodes.OK).json({
         message: "username fetched",
         statuscode: 200,
-        userNames: userNames,
+        attedence: attedenceUser,
       });
     }
   } catch (error) {

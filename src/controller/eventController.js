@@ -1,5 +1,6 @@
 // Assuming you have ObjectId from mongoose
 import mongoose from "mongoose";
+import moment from "moment";
 import User from "../model/userSchema.js";
 import { StatusCodes } from "http-status-codes";
 
@@ -13,6 +14,8 @@ export const addEvent = async (req, res) => {
       endDate,
       allDay,
       location,
+      startTime,
+      endTime,
       repeat,
     } = req.body;
 
@@ -42,10 +45,14 @@ export const addEvent = async (req, res) => {
       participants: participantIds,
       startDate,
       endDate,
+      startTime,
+      endTime,
       allDay,
       location,
       repeat,
     };
+    console.log(newEvent);
+    let events = [];
 
     // Add the event to the organizer's events array
     organizer.events.push(newEvent);

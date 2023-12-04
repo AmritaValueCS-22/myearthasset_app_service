@@ -21,7 +21,7 @@ const generateToken = (user) => {
 export const signup = async (req, res) => {
   const { username, email, password, confirmPassword, phoneNumber, userRole } =
     req.body;
-  console.log(req.body);
+
   if (!username || !email || !password) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       message: "Please Provide Required Information",
@@ -123,6 +123,7 @@ export const login = async (req, res) => {
     // );
     if (user) {
       const token = generateToken(user);
+      console.log(token);
       return res.status(StatusCodes.OK).json({
         message: "Login successful",
         userRole: user.userRole,
