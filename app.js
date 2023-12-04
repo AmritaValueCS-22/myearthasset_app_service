@@ -1,69 +1,36 @@
-import express, { json } from "express";
 import dotenv from "dotenv";
 dotenv.config();
-import connectDB from "./src/db/conect.js";
-const app = express();
-import cors from "cors";
-import authRouter from "./src/routes/auth.js";
-import postReducer from "./src/routes/post.js";
-import { MongoDbURL } from "./utilis/index.js";
+import express from "express";
+import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import multer from "multer";
-app.use(cors());
-app.use(json());
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
+import authRoutes from "./src/router/authRoute.js";
+import profileRoutes from "./src/router/profileRouter.js";
+import eventRoutes from "./src/router/eventRoutes.js";
+import userRoutes from "./src/router/userRoutes.js";
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(bodyParser.json());
+
+// Routes
+app.use("/auth", authRoutes);
+app.use("/profile", profileRoutes);
+app.use("/events", eventRoutes);
+app.use("/user", userRoutes);
+
+mongoose
+  .connect(process.env.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   })
-);
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static("uploads"));
-app.use("/api", authRouter);
-app.use("/user", postReducer);
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    const fileName = file.originalname.toLowerCase().split(" ").join("-");
-    cb(null, Date.now() + "-" + fileName);
-  },
-});
-
-const upload = multer({
-  storage: storage,
-});
-
-app.post("/api/registers", upload.single("profilePicture"), (req, res) => {
-  const { firstName, password, email } = req.body;
-  res.send("hi");
-});
-
-//Port and Connect to DB
-const port = process.env.PORT || 5000;
-const start = async () => {
-  try {
-    await connectDB(MongoDbURL);
-    app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
     });
-  } catch (error) {
-    console.log("error =>", error);
-  }
-};
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack, "err");
-
-  if (res.headersSent) {
-    return next(err);
-  }
-
-  res
-    .status(err.status || 500)
-    .json({ error: err.message || "Internal Server Error" });
-});
-
-start();
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+  });
