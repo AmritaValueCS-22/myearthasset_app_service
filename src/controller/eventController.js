@@ -65,6 +65,7 @@ export const addEvent = async (req, res) => {
       participantIds.map(async (participantId) => {
         const participant = await User.findById(participantId);
         if (participant) {
+          console.log(participant, "hello");
           // Update the event details for the participant
           participant.events.push(newEvent);
           await participant.save();

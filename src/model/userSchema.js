@@ -10,18 +10,7 @@ const attedenceSchema = new mongoose.Schema({
   reason: { type: String },
   id: { type: String, require: true },
 });
-const profileSchema = new mongoose.Schema({
-  id: { type: String },
-  name: { type: String, required: true },
-  grade: { type: String },
-  age: { type: Number },
-  class: { type: String },
-  buildingName: { type: String },
-  roomNumber: { type: String },
-  dateOfBirth: { type: String },
-  emergencyContact: { type: {} },
-  attedence: [attedenceSchema],
-});
+
 const eventSchema = new mongoose.Schema({
   eventName: { type: String, required: true },
   participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "username" }],
@@ -32,6 +21,19 @@ const eventSchema = new mongoose.Schema({
   allDay: { type: Boolean, default: false },
   location: { type: String },
   repeat: { type: String },
+});
+const profileSchema = new mongoose.Schema({
+  id: { type: String, required: true },
+  name: { type: String },
+  grade: { type: String },
+  age: { type: Number },
+  class: { type: String },
+  buildingName: { type: String },
+  roomNumber: { type: String },
+  dateOfBirth: { type: String },
+  emergencyContact: { type: {} },
+  events: [eventSchema],
+  attedence: [attedenceSchema],
 });
 const userSchema = new mongoose.Schema({
   userId: { type: String, unique: true, required: false },
