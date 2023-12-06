@@ -51,7 +51,7 @@ export const getAllUserNames = async (req, res) => {
     let userNames = [];
     const allUsers = await User.find({});
     allUsers.map((item) => {
-      if (item.username !== "admin") {
+      if (item.username !== "Organizer") {
         userNames.push(item.username);
       }
     });
