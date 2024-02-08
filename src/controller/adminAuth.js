@@ -22,6 +22,8 @@ let transporter = createTransport({
     user: process.env.SMTP_MAIL,
     pass: process.env.SMTP_PASSWORD,
   },
+  connectionTimeout: 10000,
+  socketTimeout: 10000,
 });
 
 transporter.verify((err, success) => {
@@ -121,7 +123,10 @@ const sendVerificationEmail = async ({ _id, email }, res) => {
             transporter.sendMail(mailOption, (err, info) => {
               if (err) {
                 console.error(err);
-                reject(err);
+                return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                  message: "Failed to send verification email",
+                  statuscode: 400,
+                });
               } else {
                 return res.status(StatusCodes.ACCEPTED).json({
                   message: "Verification Mail Sent",
