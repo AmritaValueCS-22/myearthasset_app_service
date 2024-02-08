@@ -118,7 +118,7 @@ const sendVerificationEmail = async ({ _id, email }, res) => {
         .save()
         .then(() => {
           new Promise((resolve, reject) => {
-            transporter.sendMail(mailData, (err, info) => {
+            transporter.sendMail(mailOption, (err, info) => {
               if (err) {
                 console.error(err);
                 reject(err);
