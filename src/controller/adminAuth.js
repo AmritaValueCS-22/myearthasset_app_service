@@ -23,6 +23,7 @@ let transporter = createTransport({
     pass: process.env.SMTP_PASSWORD,
   },
 });
+
 transporter.verify((err, success) => {
   if (err) {
     console.log(err, "is error");
@@ -93,7 +94,7 @@ export const AdminSignUp = async (req, res) => {
   }
 };
 const sendVerificationEmail = async ({ _id, email }, res) => {
-  const currentUrl = "http://123.63.2.13:8080";
+  const currentUrl = "http://10.0.0.69:3001";
   const uniqueString = uuidv4() + _id;
   const mailOption = {
     from: process.env.SMTP_MAIL,
@@ -116,10 +117,17 @@ const sendVerificationEmail = async ({ _id, email }, res) => {
       newVerification
         .save()
         .then(() => {
-          transporter.sendMail(mailOption).then(() => {
-            return res.status(StatusCodes.ACCEPTED).json({
-              message: "Verification Mail Sent",
-              statuscode: 200,
+          new Promise((resolve, reject) => {
+            transporter.sendMail(mailData, (err, info) => {
+              if (err) {
+                console.error(err);
+                reject(err);
+              } else {
+                return res.status(StatusCodes.ACCEPTED).json({
+                  message: "Verification Mail Sent",
+                  statuscode: 200,
+                });
+              }
             });
           });
         })
