@@ -33,7 +33,7 @@ export const signUp = async (req, res) => {
     noOfAssets: 0,
   };
   let user = await User.findOne({ email });
-
+  console.log(user, "user");
   if (user) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       message: "User already registered, Try to login !",
@@ -41,8 +41,10 @@ export const signUp = async (req, res) => {
     });
   } else {
     User.create(userData).then((data, err) => {
-      if (err) res.status(StatusCodes.BAD_REQUEST).json({ err });
-      else {
+      if (err) {
+        res.status(StatusCodes.BAD_REQUEST).json({ err });
+        console.log(err, "err");
+      } else {
         res
           .status(StatusCodes.CREATED)
           .json({ message: "User created Successfully", statuscode: 201 });
