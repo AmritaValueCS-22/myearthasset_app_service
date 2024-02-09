@@ -26,13 +26,13 @@ let transporter = createTransport({
   socketTimeout: 10000,
 });
 
-transporter.verify((err, success) => {
-  if (err) {
-    console.log(err, "is error");
-  } else {
-    console.log("is successful");
-  }
-});
+// transporter.verify((err, success) => {
+//   if (err) {
+//     console.log(err, "is error");
+//   } else {
+//     console.log("is successful");
+//   }
+// });
 export const AdminSignUp = async (req, res) => {
   const { fullname, email, password, role } = req.body;
   console.log(req.body);
