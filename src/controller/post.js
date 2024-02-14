@@ -23,7 +23,7 @@ export const uploadImage = async (req, res) => {
       longtitude: longtitude,
       latitude,
       // imageUrl: path.basename(req.file.path),
-      imageUrl: req.file.path,
+      imageUrl: req?.file?.path || "no images",
       id,
       email,
     });
