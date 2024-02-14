@@ -63,10 +63,18 @@ export const signIn = async (req, res) => {
     }
 
     const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      res.status(StatusCodes.BAD_REQUEST).json({
+        message: "User does not exist..!",
+        statuscode: 400,
+      });
+      return;
+    }
     var passwordIsValid = bcrypt.compareSync(
       req.body.password,
       user.hash_password
     );
+
     if (!passwordIsValid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         accessToken: null,
@@ -91,17 +99,14 @@ export const signIn = async (req, res) => {
         });
       } else {
         res.status(StatusCodes.UNAUTHORIZED).json({
-          message: "Something went wrong!",
+          message: "Something went wrongs!",
           statuscode: 401,
         });
       }
-    } else {
-      res.status(StatusCodes.BAD_REQUEST).json({
-        message: "User does not exist..!",
-        statuscode: 400,
-      });
     }
   } catch (error) {
+    console.log(error, "u");
+
     res.status(StatusCodes.BAD_REQUEST).json({ error: "Something went wrong" });
   }
 };
