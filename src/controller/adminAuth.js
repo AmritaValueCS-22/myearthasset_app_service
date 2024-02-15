@@ -233,7 +233,7 @@ export const VerifiedUser = async (req, res) => {
 
 export const AdminSignIn = async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
+
   if ((!email, !password)) {
     return res
       .status(StatusCodes.BAD_REQUEST)
@@ -261,6 +261,7 @@ export const AdminSignIn = async (req, res) => {
       });
     }
     if (admin) {
+      console.log(admin, "admin");
       if (admin && admin.verified) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: "Email has not been verified please check inbox",
@@ -301,7 +302,7 @@ export const AdminSignIn = async (req, res) => {
 };
 export const getAdminUsers = async (req, res) => {
   const id = req.query.id;
-  console.log(id);
+
   // Check if email and token are provided
   if (!id) {
     return res.status(400).json({ error: "Email and token are required." });
