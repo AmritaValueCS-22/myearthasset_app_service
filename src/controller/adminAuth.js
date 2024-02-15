@@ -257,29 +257,31 @@ export const AdminSignIn = async (req, res) => {
     }
 
     if (admin) {
-      if (admin && !admin.verified) {
+      console.log(admin);
+      if (!admin.verified) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: "Email has not been verified please check inbox",
           statuscode: 400,
         });
-      }
-      if (passwordIsValid) {
-        const token = sign(
-          { _id: admin._id, role: admin.role },
-          process.env.JWT_SECRET,
-          { expiresIn: "30d" }
-        );
-        const { id, _id } = admin;
-        res.status(StatusCodes.OK).json({
-          user: { id, token, userId: _id },
-          message: "Logged In Successfully",
-          statuscode: 200,
-        });
       } else {
-        res.status(StatusCodes.UNAUTHORIZED).json({
-          message: "Something went wrong!",
-          statuscode: 401,
-        });
+        if (passwordIsValid) {
+          const token = sign(
+            { _id: admin._id, role: admin.role },
+            process.env.JWT_SECRET,
+            { expiresIn: "30d" }
+          );
+          const { id, _id } = admin;
+          res.status(StatusCodes.OK).json({
+            user: { id, token, userId: _id },
+            message: "Logged In Successfully",
+            statuscode: 200,
+          });
+        } else {
+          res.status(StatusCodes.UNAUTHORIZED).json({
+            message: "Something went wrong!",
+            statuscode: 401,
+          });
+        }
       }
     } else {
       res.status(StatusCodes.BAD_REQUEST).json({
