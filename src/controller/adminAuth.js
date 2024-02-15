@@ -255,9 +255,9 @@ export const AdminSignIn = async (req, res) => {
         statuscode: 401,
       });
     }
-    console.log(admin, "admin");
+
     if (admin) {
-      if (admin && admin.verified) {
+      if (admin && !admin.verified) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: "Email has not been verified please check inbox",
           statuscode: 400,
@@ -282,7 +282,6 @@ export const AdminSignIn = async (req, res) => {
         });
       }
     } else {
-      console.log("err");
       res.status(StatusCodes.BAD_REQUEST).json({
         message: "User does not exist..!",
         statuscode: 400,
