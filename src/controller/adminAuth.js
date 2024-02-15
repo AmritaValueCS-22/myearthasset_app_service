@@ -35,7 +35,7 @@ transporter.verify((err, success) => {
 });
 export const AdminSignUp = async (req, res) => {
   const { fullname, email, password, role } = req.body;
-  console.log(req.body);
+
   if ((!fullname, !email, !password)) {
     return res
       .status(StatusCodes.BAD_REQUEST)
@@ -49,7 +49,6 @@ export const AdminSignUp = async (req, res) => {
           statuscode: 400,
         });
       } else {
-        console.log(result);
         if (result.length > 0 && !result[0]?.verified) {
           return res.status(StatusCodes.BAD_REQUEST).json({
             message: "Email has not been verified please check inbox",
@@ -153,7 +152,7 @@ const sendVerificationEmail = async ({ _id, email }, res) => {
 };
 export const VerifyUser = async (req, res) => {
   const { id, uniqueString } = req.params;
-  console.log(id, uniqueString);
+
   verifyAdminUser
     .find({ id })
     .then((result) => {
@@ -239,11 +238,7 @@ export const AdminSignIn = async (req, res) => {
       .status(StatusCodes.BAD_REQUEST)
       .json({ message: "Enter all feilds", statuscode: 400 });
   }
-  if ((!email, !password)) {
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ message: "Enter all feilds", statuscode: 400 });
-  }
+
   try {
     const admin = await adminUserSchema.findOne({
       email: req.body.email,
@@ -260,8 +255,8 @@ export const AdminSignIn = async (req, res) => {
         statuscode: 401,
       });
     }
+    console.log(admin, "admin");
     if (admin) {
-      console.log(admin, "admin");
       if (admin && admin.verified) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: "Email has not been verified please check inbox",
