@@ -26,13 +26,13 @@ let transporter = createTransport({
   socketTimeout: 10000,
 });
 
-// transporter.verify((err, success) => {
-//   if (err) {
-//     console.log(err, "is error");
-//   } else {
-//     console.log("is successful");
-//   }
-// });
+transporter.verify((err, success) => {
+  if (err) {
+    console.log(err, "is error");
+  } else {
+    console.log("is successful");
+  }
+});
 export const AdminSignUp = async (req, res) => {
   const { fullname, email, password, role } = req.body;
   console.log(req.body);
@@ -49,54 +49,55 @@ export const AdminSignUp = async (req, res) => {
           statuscode: 400,
         });
       } else {
-        // if (!result[0].verified) {
-        //   return res.status(StatusCodes.BAD_REQUEST).json({
-        //     message: "Email has not been verified please check inbox",
-        //     statuscode: 400,
-        //   });
-        // } else {
-        const roundCount = 10;
-        bcrypt
-          .hash(password, roundCount)
-          .then((hash_password) => {
-            const admin = new adminUserSchema({
-              fullname,
-              id: ADMIN_ID,
-              email,
-              hash_password,
-              role,
-              verified: false,
-            });
-            admin
-              .save()
-              .then((result) => {
-                // res.status(StatusCodes.CREATED).json({
-                //   message: "User Admin created Successfully",
-                //   statuscode: 201,
-                //   data: result,
-                // });
-                sendVerificationEmail(result, res);
-              })
-              .catch((err) => {
-                return res.status(StatusCodes.BAD_REQUEST).json({
-                  err: "An error accure while saving user admin account!",
-                });
-              });
-          })
-          .catch((err) => {
-            return res.status(StatusCodes.BAD_REQUEST).json({
-              err: "An error accure while hashing password!",
-            });
+        console.log(result);
+        if (result.length > 0 && !result[0]?.verified) {
+          return res.status(StatusCodes.BAD_REQUEST).json({
+            message: "Email has not been verified please check inbox",
+            statuscode: 400,
           });
+        } else {
+          const roundCount = 10;
+          bcrypt
+            .hash(password, roundCount)
+            .then((hash_password) => {
+              const admin = new adminUserSchema({
+                fullname,
+                id: ADMIN_ID,
+                email,
+                hash_password,
+                role,
+                verified: false,
+              });
+              admin
+                .save()
+                .then((result) => {
+                  // res.status(StatusCodes.CREATED).json({
+                  //   message: "User Admin created Successfully",
+                  //   statuscode: 201,
+                  //   data: result,
+                  // });
+                  sendVerificationEmail(result, res);
+                })
+                .catch((err) => {
+                  return res.status(StatusCodes.BAD_REQUEST).json({
+                    err: "An error accure while saving user admin account!",
+                  });
+                });
+            })
+            .catch((err) => {
+              return res.status(StatusCodes.BAD_REQUEST).json({
+                err: "An error accure while hashing password!",
+              });
+            });
+        }
       }
-      // }
     });
   } catch (error) {
     console.log(error);
   }
 };
 const sendVerificationEmail = async ({ _id, email }, res) => {
-  const currentUrl = "http://10.0.0.69:3001";
+  const currentUrl = "http://123.63.2.13:3001";
   const uniqueString = uuidv4() + _id;
   const mailOption = {
     from: process.env.SMTP_MAIL,
