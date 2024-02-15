@@ -239,8 +239,15 @@ export const AdminSignIn = async (req, res) => {
       .status(StatusCodes.BAD_REQUEST)
       .json({ message: "Enter all feilds", statuscode: 400 });
   }
+  if ((!email, !password)) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: "Enter all feilds", statuscode: 400 });
+  }
   try {
-    const admin = await adminUserSchema.findOne({ email: req.body.email });
+    const admin = await adminUserSchema.findOne({
+      email: req.body.email,
+    });
 
     var passwordIsValid = bcrypt.compareSync(
       req.body.password,
@@ -254,6 +261,12 @@ export const AdminSignIn = async (req, res) => {
       });
     }
     if (admin) {
+      if (admin && admin.verified) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          message: "Email has not been verified please check inbox",
+          statuscode: 400,
+        });
+      }
       if (passwordIsValid) {
         const token = sign(
           { _id: admin._id, role: admin.role },
