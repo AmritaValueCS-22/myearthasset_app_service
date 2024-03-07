@@ -26,6 +26,7 @@ const userSchema = new Schema(
     },
     verified: Boolean,
   },
+
   { timestamps: true }
 );
 

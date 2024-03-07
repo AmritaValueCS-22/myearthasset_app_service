@@ -10,14 +10,14 @@ const { sign } = jwt;
 export const signUp = async (req, res) => {
   const { fullname, email, password, role, selectId, idNumber, mobile } =
     req.body;
-  console.log(req.body);
+
   if (!fullname || !email || !password) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       message: "Please Provide Required Information",
       statuscode: 400,
     });
   }
-  console.log(req?.file?.path);
+
   const hash_password = bcrypt.hashSync(password, 8);
   const userData = {
     id: crypto.randomUUID(),

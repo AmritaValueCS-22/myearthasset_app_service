@@ -9,8 +9,16 @@ import {
 import { uploadImage } from "../controller/post.js";
 import { uploadMiddlewear } from "../middlewear/uploadImage.js";
 import { AdminSignIn, AdminSignUp } from "../controller/adminAuth.js";
+import {
+  emailVerify,
+  resetPassword,
+  verifyOtp,
+} from "../controller/Forgetpassword.js";
 
 router.route("/signin").post(validateSignIpRequest, isRequestValidated, signIn);
+router.route("/verifyEmail").get(emailVerify);
+router.route("/verifyOtp").post(verifyOtp);
+router.route("/resetPassword").post(resetPassword);
 
 router
   .route("/signup")
