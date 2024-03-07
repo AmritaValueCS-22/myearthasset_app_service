@@ -48,6 +48,7 @@ async function sendVerificationEmail(email, otp) {
 
 export const emailVerify = async (req, res) => {
   const email = req.query.email;
+  console.log("workinf", email);
   const isUserAvailable = await User.findOne({ email });
   try {
     if (!isUserAvailable) {
