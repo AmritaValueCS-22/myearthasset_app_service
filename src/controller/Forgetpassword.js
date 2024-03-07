@@ -35,12 +35,12 @@ async function sendVerificationEmail(email, otp) {
     from: process.env.SMTP_MAIL,
     to: email,
     subject: "Resetting your MyEarthAsset account password ",
-    html: `<h1 style="text-align:center;color:salmon">Hello MyEarthAsset member's</h1>
+    html: `<h1 style="text-align:center;color:cadetblue">Hello MyEarthAsset member's</h1>
         <h4  style="text-align:center;color:black;margin-bottom:20">You have requested to reset the password of your myearthasset account</h4>
         <h4  style="text-align:center;color:black;margin-bottom:5">Please find the security code to change your password</h4>
-        <h2 style="text-align:center;color:salmon;">${otp}</h2> 
+        <h2 style="text-align:center;color:olive;">${otp}</h2> 
         <h4  style="text-align:center;color:black;margin-top:20">Sportingly,</h4>
-        <p style="text-align:center;color:salmon;margin:0;font-weight:700;font-size:18px">MyEarthAsset Team</p> 
+        <p style="text-align:center;color:cadetblue;margin:0;font-weight:700;font-size: 12px;letter-spacing: 2px;">Arun K Prabhu</p> 
         `,
   };
   transporter.sendMail(mailOption, (err, info) => {});
